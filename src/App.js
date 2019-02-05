@@ -1,7 +1,8 @@
-import React, { Component }                                   from 'react';
+import React, { Component }                           from 'react';
 import './App.css';
-import { Row, Col, Input, InputNumber,  Button, Icon } from 'antd';
+import { Row, Col, Input, InputNumber, Button, Icon } from 'antd';
 import 'antd/dist/antd.css';
+import ReactAudioPlayer                               from 'react-audio-player';
 
 const InputGroup = Input.Group;
 
@@ -13,20 +14,25 @@ class App extends Component
 		super(props);
 		this.state =
 			{
-				time   : 0,
-				hour   : '',
-				minute : '',
-				second : '',
+				time       : 0,
+				hour       : '',
+				minute     : '',
+				second     : '',
+				show_alarm : false,
 			};
 	}
 
 	alarm()
 	{
-		let my_time = this.state.time;
-		this.setState({time : my_time});
-		if ( this.state.time  !== 0)
+		let my_time = this.state.time - 1;
+		this.setState({ time : my_time });
+		if ( this.state.time !== 0 )
 		{
-			setTimeout(this.alarm, 1000);
+			setTimeout(this.alarm.bind(this), 1000);
+		}
+		else
+		{
+			this.setState({ show_alarm : true });
 		}
 
 	}
@@ -35,9 +41,9 @@ class App extends Component
 	{
 		let interval = (this.state.hour * 60 * 60) + (this.state.minute * 60) + this.state.second;
 		this.setState({
-			time : interval
+			time : interval,
 		});
-		setTimeout(this.alarm, 1000);
+		setTimeout(this.alarm.bind(this), 1000);
 	}
 
 	set_change(value, type)
@@ -59,6 +65,8 @@ class App extends Component
 					second : value,
 				});
 				break;
+			default:
+
 		}
 	}
 
@@ -90,8 +98,9 @@ class App extends Component
 						Remind it!
 					</Button>
 				</Row>
-
-
+				<Row>
+					<ReactAudioPlayer src="Careless.ogg" autoPlay controls/>
+				</Row>
 			</div>
 		);
 	}
