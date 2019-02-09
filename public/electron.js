@@ -11,7 +11,7 @@ let mainWindow;
 
 function createWindow()
 {
-	mainWindow = new BrowserWindow({ min_width : 250, min_height : 400, width : 250, height : 400 });
+	mainWindow = new BrowserWindow({ min_width : 300, min_height : 400, width : 300, height : 400 });
 	mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${ path.join(__dirname, '../build/index.html') }`);
 	mainWindow.on('closed', () => mainWindow = null);
 }

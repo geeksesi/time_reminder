@@ -2,7 +2,6 @@ import React, { Component }                           from 'react';
 import './App.css';
 import { Row, Col, Input, InputNumber, Button, Icon } from 'antd';
 import 'antd/dist/antd.css';
-import ReactAudioPlayer                               from 'react-audio-player';
 
 const InputGroup = Input.Group;
 
@@ -14,11 +13,13 @@ class App extends Component
 		super(props);
 		this.state =
 			{
-				time       : 0,
-				hour       : '',
-				minute     : '',
-				second     : '',
-				show_alarm : false,
+				time         : 0,
+				hour         : '',
+				minute       : '',
+				second       : '',
+				audio        : new Audio("assets/Careless.ogg"),
+				audio_status : "Play",
+				audio_icon   : "play-circle",
 			};
 	}
 
@@ -32,9 +33,29 @@ class App extends Component
 		}
 		else
 		{
-			this.setState({ show_alarm : true });
+			this.control_audio();
 		}
 
+	}
+
+	control_audio()
+	{
+		if ( this.state.audio_status === "Play" )
+		{
+			this.state.audio.play();
+			this.setState({
+				audio_icon   : "pause-circle",
+				audio_status : "Pause",
+			});
+		}
+		else
+		{
+			this.state.audio.pause();
+			this.setState({
+				audio_icon   : "play-circle",
+				audio_status : "Play",
+			});
+		}
 	}
 
 	submit_alarm()
@@ -98,8 +119,11 @@ class App extends Component
 						Remind it!
 					</Button>
 				</Row>
+				<br/>
 				<Row>
-					<ReactAudioPlayer src="Careless.ogg" autoPlay controls/>
+					<Button type="primary" icon={ this.state.audio_icon } onClick={ () => this.control_audio() }>
+						{ this.state.audio_status }
+					</Button>
 				</Row>
 			</div>
 		);
